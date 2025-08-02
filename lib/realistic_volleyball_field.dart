@@ -60,165 +60,173 @@ class _RealisticVolleyballFieldState extends State<RealisticVolleyballField> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallScreen = screenWidth < 500;
+    
     return Container(
-      padding: const EdgeInsets.all(40),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          // Terrain de volley réaliste
-          Stack(
-            children: [
-              // Zone étendue pour les lignes pointillées
-              SizedBox(
-                width: 380,
-                height: 200,
-                child: CustomPaint(
-                  painter: VolleyballCourtPainter(isOpponent: widget.isOpponent),
-                ),
-              ),
-              // Positions des joueurs sur le demi-terrain
-              // Position 4 (Attaquant gauche - avant)
-              Positioned(
-                left: 90,
-                top: 50,
-                child: Consumer<TeamState>(
-                  builder: (context, teamState, child) => PlayerPosition(
-                    number: widget.isOpponent 
-                      ? teamState.getOpponentPlayer('pos4')
-                      : teamState.getHomePlayer('pos4'),
-                    position: 'OH',
-                    onTap: () => _showPlayerDialog('pos4', '4'),
-                    isOpponent: widget.isOpponent,
-                  ),
-                ),
-              ),
-              // Position 3 (Central - avant)
-              Positioned(
-                left: 165,
-                top: 50,
-                child: Consumer<TeamState>(
-                  builder: (context, teamState, child) => PlayerPosition(
-                    number: widget.isOpponent 
-                      ? teamState.getOpponentPlayer('pos3')
-                      : teamState.getHomePlayer('pos3'),
-                    position: 'MB',
-                    onTap: () => _showPlayerDialog('pos3', '3'),
-                    isOpponent: widget.isOpponent,
-                  ),
-                ),
-              ),
-              // Position 2 (Attaquant droit - avant)
-              Positioned(
-                left: 240,
-                top: 50,
-                child: Consumer<TeamState>(
-                  builder: (context, teamState, child) => PlayerPosition(
-                    number: widget.isOpponent 
-                      ? teamState.getOpponentPlayer('pos2')
-                      : teamState.getHomePlayer('pos2'),
-                    position: 'RS',
-                    onTap: () => _showPlayerDialog('pos2', '2'),
-                    isOpponent: widget.isOpponent,
-                  ),
-                ),
-              ),
-              // Position 5 (Réceptionneur gauche - arrière)
-              Positioned(
-                left: 90,
-                top: 120,
-                child: Consumer<TeamState>(
-                  builder: (context, teamState, child) => PlayerPosition(
-                    number: widget.isOpponent 
-                      ? teamState.getOpponentPlayer('pos5')
-                      : teamState.getHomePlayer('pos5'),
-                    position: 'OH',
-                    onTap: () => _showPlayerDialog('pos5', '5'),
-                    isOpponent: widget.isOpponent,
-                  ),
-                ),
-              ),
-              // Position 6 (Défenseur central - arrière)
-              Positioned(
-                left: 165,
-                top: 120,
-                child: Consumer<TeamState>(
-                  builder: (context, teamState, child) => PlayerPosition(
-                    number: widget.isOpponent 
-                      ? teamState.getOpponentPlayer('pos6')
-                      : teamState.getHomePlayer('pos6'),
-                    position: 'DS',
-                    onTap: () => _showPlayerDialog('pos6', '6'),
-                    isOpponent: widget.isOpponent,
-                  ),
-                ),
-              ),
-              // Position 1 (Passeur - arrière droit)
-              Positioned(
-                left: 240,
-                top: 120,
-                child: Consumer<TeamState>(
-                  builder: (context, teamState, child) => PlayerPosition(
-                    number: widget.isOpponent 
-                      ? teamState.getOpponentPlayer('pos1')
-                      : teamState.getHomePlayer('pos1'),
-                    position: 'S',
-                    onTap: () => _showPlayerDialog('pos1', '1'),
-                    isOpponent: widget.isOpponent,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          // Libero à côté
-          const SizedBox(width: 40),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                widget.isOpponent ? 'Libero Adverse' : 'Libero',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Consumer<TeamState>(
-                builder: (context, teamState, child) => GestureDetector(
-                  onTap: () => _showPlayerDialog('libero', 'Libéro'),
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: widget.isOpponent ? Colors.red.shade700 : Colors.red.shade400,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
+      padding: EdgeInsets.all(isSmallScreen ? 10 : 40),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // Terrain de volley réaliste
+            Stack(
+              children: [
+                // Zone étendue pour les lignes pointillées
+                SizedBox(
+                  width: isSmallScreen ? 300 : 380,
+                  height: isSmallScreen ? 160 : 200,
+                  child: CustomPaint(
+                    painter: VolleyballCourtPainter(
+                      isOpponent: widget.isOpponent,
+                      isSmallScreen: isSmallScreen,
                     ),
-                    child: Center(
-                      child: Text(
-                        widget.isOpponent 
-                          ? teamState.getOpponentPlayer('libero')
-                          : teamState.getHomePlayer('libero'),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                  ),
+                ),
+                // Position 4 (Attaquant gauche - avant)
+                Positioned(
+                  left: isSmallScreen ? 70 : 90,
+                  top: isSmallScreen ? 40 : 50,
+                  child: Consumer<TeamState>(
+                    builder: (context, teamState, child) => PlayerPosition(
+                      number: widget.isOpponent 
+                        ? teamState.getOpponentPlayer('pos4')
+                        : teamState.getHomePlayer('pos4'),
+                      position: 'OH',
+                      onTap: () => _showPlayerDialog('pos4', '4'),
+                      isOpponent: widget.isOpponent,
+                    ),
+                  ),
+                ),
+                // Position 3 (Central - avant)
+                Positioned(
+                  left: isSmallScreen ? 130 : 165,
+                  top: isSmallScreen ? 40 : 50,
+                  child: Consumer<TeamState>(
+                    builder: (context, teamState, child) => PlayerPosition(
+                      number: widget.isOpponent 
+                        ? teamState.getOpponentPlayer('pos3')
+                        : teamState.getHomePlayer('pos3'),
+                      position: 'MB',
+                      onTap: () => _showPlayerDialog('pos3', '3'),
+                      isOpponent: widget.isOpponent,
+                    ),
+                  ),
+                ),
+                // Position 2 (Attaquant droit - avant)
+                Positioned(
+                  left: isSmallScreen ? 190 : 240,
+                  top: isSmallScreen ? 40 : 50,
+                  child: Consumer<TeamState>(
+                    builder: (context, teamState, child) => PlayerPosition(
+                      number: widget.isOpponent 
+                        ? teamState.getOpponentPlayer('pos2')
+                        : teamState.getHomePlayer('pos2'),
+                      position: 'RS',
+                      onTap: () => _showPlayerDialog('pos2', '2'),
+                      isOpponent: widget.isOpponent,
+                    ),
+                  ),
+                ),
+                // Position 5 (Réceptionneur gauche - arrière)
+                Positioned(
+                  left: isSmallScreen ? 70 : 90,
+                  top: isSmallScreen ? 100 : 120,
+                  child: Consumer<TeamState>(
+                    builder: (context, teamState, child) => PlayerPosition(
+                      number: widget.isOpponent 
+                        ? teamState.getOpponentPlayer('pos5')
+                        : teamState.getHomePlayer('pos5'),
+                      position: 'OH',
+                      onTap: () => _showPlayerDialog('pos5', '5'),
+                      isOpponent: widget.isOpponent,
+                    ),
+                  ),
+                ),
+                // Position 6 (Défenseur central - arrière)
+                Positioned(
+                  left: isSmallScreen ? 130 : 165,
+                  top: isSmallScreen ? 100 : 120,
+                  child: Consumer<TeamState>(
+                    builder: (context, teamState, child) => PlayerPosition(
+                      number: widget.isOpponent 
+                        ? teamState.getOpponentPlayer('pos6')
+                        : teamState.getHomePlayer('pos6'),
+                      position: 'DS',
+                      onTap: () => _showPlayerDialog('pos6', '6'),
+                      isOpponent: widget.isOpponent,
+                    ),
+                  ),
+                ),
+                // Position 1 (Passeur - arrière droit)
+                Positioned(
+                  left: isSmallScreen ? 190 : 240,
+                  top: isSmallScreen ? 100 : 120,
+                  child: Consumer<TeamState>(
+                    builder: (context, teamState, child) => PlayerPosition(
+                      number: widget.isOpponent 
+                        ? teamState.getOpponentPlayer('pos1')
+                        : teamState.getHomePlayer('pos1'),
+                      position: 'S',
+                      onTap: () => _showPlayerDialog('pos1', '1'),
+                      isOpponent: widget.isOpponent,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            // Libero à côté
+            SizedBox(width: isSmallScreen ? 20 : 40),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  widget.isOpponent ? 'Libero Adverse' : 'Libero',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Consumer<TeamState>(
+                  builder: (context, teamState, child) => GestureDetector(
+                    onTap: () => _showPlayerDialog('libero', 'Libéro'),
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: widget.isOpponent ? Colors.red.shade700 : Colors.red.shade400,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      child: Center(
+                        child: Text(
+                          widget.isOpponent 
+                            ? teamState.getOpponentPlayer('libero')
+                            : teamState.getHomePlayer('libero'),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 5),
-              const Text(
-                'Libero',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
+                const SizedBox(height: 5),
+                const Text(
+                  'Libero',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -226,8 +234,12 @@ class _RealisticVolleyballFieldState extends State<RealisticVolleyballField> {
 
 class VolleyballCourtPainter extends CustomPainter {
   final bool isOpponent;
+  final bool isSmallScreen;
   
-  VolleyballCourtPainter({required this.isOpponent});
+  VolleyballCourtPainter({
+    required this.isOpponent,
+    this.isSmallScreen = false,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -255,18 +267,15 @@ class VolleyballCourtPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
 
-    // Dimensions réelles : demi-terrain de 9x4.5m
-    // Zone de dessin : 380x200 pixels
-    // Terrain principal : 270x135 pixels (rectangle 2:1)
-    // Marges : 55px de chaque côté
-    
-    const double margin = 55.0;
-    const double courtWidth = 270.0;
-    const double courtHeight = 135.0;
-    const double attackLineDistance = 90.0; // 3m sur 4.5m = 2/3 = 90px sur 135px
+    // Dimensions adaptées selon la taille d'écran
+    final double margin = isSmallScreen ? 40.0 : 55.0;
+    final double courtWidth = isSmallScreen ? 220.0 : 270.0;
+    final double courtHeight = isSmallScreen ? 110.0 : 135.0;
+    final double attackLineDistance = isSmallScreen ? 73.0 : 90.0;
+    final double topMargin = isSmallScreen ? 25.0 : 32.5;
 
-    // Demi-terrain principal (9x4.5m)
-    final Rect courtRect = Rect.fromLTWH(margin, 32.5, courtWidth, courtHeight);
+    // Demi-terrain principal adapté
+    final Rect courtRect = Rect.fromLTWH(margin, topMargin, courtWidth, courtHeight);
     
     // Remplir le terrain
     canvas.drawRect(courtRect, courtPaint);
