@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'volleyball_field.dart';
 import 'realistic_volleyball_field.dart';
 import 'team_state.dart';
 
@@ -86,7 +85,7 @@ class _MainMenuState extends State<MainMenu> {
                         ),
                       ),
                       selected: _selectedIndex == index,
-                      selectedTileColor: Theme.of(context).primaryColor.withOpacity(0.1),
+                      selectedTileColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                       onTap: () {
                         setState(() {
                           _selectedIndex = index;

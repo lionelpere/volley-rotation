@@ -69,7 +69,7 @@ class _RealisticVolleyballFieldState extends State<RealisticVolleyballField> {
           Stack(
             children: [
               // Zone étendue pour les lignes pointillées
-              Container(
+              SizedBox(
                 width: 380,
                 height: 200,
                 child: CustomPaint(

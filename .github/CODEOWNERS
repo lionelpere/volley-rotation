@@ -1,0 +1,24 @@
+    # Global code owners
+# This file defines who must review and approve changes to the repository
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global rule: lionelpere must approve all changes
+* @lionelpere
+
+# Specific protection for critical files
+/.github/ @lionelpere
+/lib/ @lionelpere
+/pubspec.yaml @lionelpere
+/pubspec.lock @lionelpere
+/.gitignore @lionelpere
+/DEPLOYMENT.md @lionelpere
+/README.md @lionelpere
+
+# Deployment and CI/CD files require extra scrutiny
+/.github/workflows/ @lionelpere
+/.github/CODEOWNERS @lionelpere
+
+# Security-sensitive configuration files
+/android/app/build.gradle.kts @lionelpere
+/ios/Runner/Info.plist @lionelpere
+/web/index.html @lionelpere
