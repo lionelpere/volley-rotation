@@ -33,7 +33,7 @@ jobs:
       
     - name: Build for web
       run: |
-        flutter build web --release --base-href "${{ secrets.FTP_BASE_FOLDER }}"
+        flutter build web --release
         
     - name: Prepare build artifacts
       run: |
@@ -51,7 +51,6 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: './deploy/'
-        server-dir: ${{ secrets.FTP_BASE_FOLDER }}/
         exclude: |
           **/.git*
           **/.git*/**
