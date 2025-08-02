@@ -33,7 +33,7 @@ jobs:
       
     - name: Build for web
       run: |
-        flutter build web --release --web-renderer html --base-href "/${{ secrets.FTP_BASE_FOLDER }}/"
+        flutter build web --release --base-href "${{ secrets.FTP_BASE_FOLDER }}"
         
     - name: Prepare build artifacts
       run: |
