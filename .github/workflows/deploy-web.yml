@@ -1,0 +1,66 @@
+name: Deploy Flutter Web to FTP
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.x'
+        channel: 'stable'
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Analyze code
+      run: flutter analyze
+      
+    - name: Run tests
+      run: flutter test
+      
+    - name: Build for web
+      run: |
+        flutter build web --release --web-renderer html --base-href "/${{ secrets.FTP_BASE_FOLDER }}/"
+        
+    - name: Prepare build artifacts
+      run: |
+        # Create a deployment directory
+        mkdir -p deploy
+        # Copy web build to deployment directory
+        cp -r build/web/* deploy/
+        # Create a simple index redirect if needed
+        echo "Web app built successfully at $(date)" > deploy/build-info.txt
+        
+    - name: Upload to FTP
+      uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65
+      with:
+        server: ${{ secrets.FTP_URL }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: './deploy/'
+        server-dir: ${{ secrets.FTP_BASE_FOLDER }}/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          .github/
+        log-level: verbose
+        
+    - name: Deployment summary
+      run: |
+        echo "🚀 Deployment completed successfully!"
+        echo "📁 Files uploaded to: ${{ secrets.FTP_URL }}/${{ secrets.FTP_BASE_FOLDER }}/"
+        echo "🌐 Your app should be available at your configured domain"
+        echo "⏰ Deployed at: $(date)"
