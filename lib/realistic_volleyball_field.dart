@@ -75,8 +75,8 @@ class _RealisticVolleyballFieldState extends State<RealisticVolleyballField> {
               children: [
                 // Zone étendue pour les lignes pointillées
                 SizedBox(
-                  width: isSmallScreen ? 300 : 380,
-                  height: isSmallScreen ? 160 : 200,
+                  width: isSmallScreen ? 260 : 320,
+                  height: isSmallScreen ? 230 : 305,
                   child: CustomPaint(
                     painter: VolleyballCourtPainter(
                       isOpponent: widget.isOpponent,
@@ -86,8 +86,8 @@ class _RealisticVolleyballFieldState extends State<RealisticVolleyballField> {
                 ),
                 // Position 4 (Attaquant gauche - avant)
                 Positioned(
-                  left: isSmallScreen ? 70 : 90,
-                  top: isSmallScreen ? 40 : 50,
+                  left: isSmallScreen ? 60 : 80,
+                  top: isSmallScreen ? 50 : 65,
                   child: Consumer<TeamState>(
                     builder: (context, teamState, child) => PlayerPosition(
                       number: widget.isOpponent 
@@ -101,8 +101,8 @@ class _RealisticVolleyballFieldState extends State<RealisticVolleyballField> {
                 ),
                 // Position 3 (Central - avant)
                 Positioned(
-                  left: isSmallScreen ? 130 : 165,
-                  top: isSmallScreen ? 40 : 50,
+                  left: isSmallScreen ? 120 : 160,
+                  top: isSmallScreen ? 50 : 65,
                   child: Consumer<TeamState>(
                     builder: (context, teamState, child) => PlayerPosition(
                       number: widget.isOpponent 
@@ -116,8 +116,8 @@ class _RealisticVolleyballFieldState extends State<RealisticVolleyballField> {
                 ),
                 // Position 2 (Attaquant droit - avant)
                 Positioned(
-                  left: isSmallScreen ? 190 : 240,
-                  top: isSmallScreen ? 40 : 50,
+                  left: isSmallScreen ? 180 : 240,
+                  top: isSmallScreen ? 50 : 65,
                   child: Consumer<TeamState>(
                     builder: (context, teamState, child) => PlayerPosition(
                       number: widget.isOpponent 
@@ -131,8 +131,8 @@ class _RealisticVolleyballFieldState extends State<RealisticVolleyballField> {
                 ),
                 // Position 5 (Réceptionneur gauche - arrière)
                 Positioned(
-                  left: isSmallScreen ? 70 : 90,
-                  top: isSmallScreen ? 100 : 120,
+                  left: isSmallScreen ? 60 : 80,
+                  top: isSmallScreen ? 140 : 185,
                   child: Consumer<TeamState>(
                     builder: (context, teamState, child) => PlayerPosition(
                       number: widget.isOpponent 
@@ -146,8 +146,8 @@ class _RealisticVolleyballFieldState extends State<RealisticVolleyballField> {
                 ),
                 // Position 6 (Défenseur central - arrière)
                 Positioned(
-                  left: isSmallScreen ? 130 : 165,
-                  top: isSmallScreen ? 100 : 120,
+                  left: isSmallScreen ? 120 : 160,
+                  top: isSmallScreen ? 140 : 185,
                   child: Consumer<TeamState>(
                     builder: (context, teamState, child) => PlayerPosition(
                       number: widget.isOpponent 
@@ -161,8 +161,8 @@ class _RealisticVolleyballFieldState extends State<RealisticVolleyballField> {
                 ),
                 // Position 1 (Passeur - arrière droit)
                 Positioned(
-                  left: isSmallScreen ? 190 : 240,
-                  top: isSmallScreen ? 100 : 120,
+                  left: isSmallScreen ? 180 : 240,
+                  top: isSmallScreen ? 140 : 185,
                   child: Consumer<TeamState>(
                     builder: (context, teamState, child) => PlayerPosition(
                       number: widget.isOpponent 
@@ -267,15 +267,14 @@ class VolleyballCourtPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
 
-    // Dimensions adaptées selon la taille d'écran
-    final double margin = isSmallScreen ? 40.0 : 55.0;
-    final double courtWidth = isSmallScreen ? 220.0 : 270.0;
-    final double courtHeight = isSmallScreen ? 110.0 : 135.0;
-    final double attackLineDistance = isSmallScreen ? 73.0 : 90.0;
+    // Dimensions 9x9 selon les spécifications
+    final double margin = isSmallScreen ? 30.0 : 40.0;
+    final double courtSize = isSmallScreen ? 180.0 : 240.0; // Carré 9x9
+    final double attackLineDistance = courtSize / 3.0; // Ligne du 1er tiers
     final double topMargin = isSmallScreen ? 25.0 : 32.5;
 
-    // Demi-terrain principal adapté
-    final Rect courtRect = Rect.fromLTWH(margin, topMargin, courtWidth, courtHeight);
+    // Demi-terrain carré 9x9
+    final Rect courtRect = Rect.fromLTWH(margin, topMargin, courtSize, courtSize);
     
     // Remplir le terrain
     canvas.drawRect(courtRect, courtPaint);
@@ -291,7 +290,7 @@ class VolleyballCourtPainter extends CustomPainter {
       netPaint,
     );
     
-    // Ligne d'attaque à 3m du filet (depuis le bas)
+    // Ligne du 1er tiers (à 1/3 de la hauteur depuis le bas)
     final double attackLineY = courtRect.bottom - attackLineDistance;
     canvas.drawLine(
       Offset(courtRect.left, attackLineY),
@@ -299,17 +298,17 @@ class VolleyballCourtPainter extends CustomPainter {
       attackLinePaint,
     );
     
-    // Prolongement en pointillés de la ligne d'attaque
+    // Prolongement en pointillés de la ligne du 1er tiers
     _drawDashedLine(
       canvas,
-      Offset(10, attackLineY),
+      Offset(5, attackLineY),
       Offset(courtRect.left, attackLineY),
       dashedLinePaint,
     );
     _drawDashedLine(
       canvas,
       Offset(courtRect.right, attackLineY),
-      Offset(size.width - 10, attackLineY),
+      Offset(size.width - 5, attackLineY),
       dashedLinePaint,
     );
   }

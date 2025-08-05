@@ -42,16 +42,24 @@
 
 ```
     🏆 TEAM MANAGEMENT
-    ├── 📊 Track your volleyball team rotations
-    ├── ⚡ Real-time player position updates  
-    ├── 🔄 Manage both your team and opponents
-    └── 📱 Responsive design for tablets & mobile
+    ├── 📊 Track your volleyball team rotations with 6 players + libero
+    ├── ⚡ Real-time player position updates with editable numbers
+    ├── 🔄 Manage both your team and opponents separately
+    ├── 💾 Automatic data persistence across sessions
+    └── 📱 Responsive design for web, tablets & mobile
 
     🎨 VISUAL FEATURES
-    ├── 🎯 Interactive volleyball court visualization
-    ├── 👆 Click-to-edit player numbers
+    ├── 🏐 Realistic 9x9 volleyball court with proper dimensions
+    ├── 📏 First-third line with dotted extensions
+    ├── 👆 Click-to-edit player numbers and positions
     ├── 🎨 Beautiful court graphics with attack lines
     └── 🌈 Color-coded teams (blue vs red)
+
+    🔄 ROTATION FEATURES
+    ├── 📊 Complete rotation management system
+    ├── 🔀 Generate all possible rotation combinations
+    ├── 📋 View detailed rotation matchups
+    └── 🏐 Libero substitution tracking
 ```
 
 ---
@@ -61,11 +69,14 @@
 The app automatically deploys to web via GitHub Actions whenever code is pushed!
 
 **Features:**
-- ✅ **Interactive Court**: Click any position to change player numbers
-- ✅ **Dual Teams**: Manage your team and opponents separately  
-- ✅ **Responsive**: Works on tablets, phones, and desktops
-- ✅ **Real-time**: Changes are instant and persistent
-- ✅ **Modern UI**: Beautiful volleyball court visualization
+- ✅ **Interactive 9x9 Court**: Realistic volleyball field with first-third line
+- ✅ **Dual Teams**: Manage your team and opponents with full rotation tracking
+- ✅ **Smart Rotations**: Generate all 36 possible rotation combinations
+- ✅ **Libero Management**: Track libero substitutions and replacement order
+- ✅ **Data Persistence**: All team configurations saved automatically
+- ✅ **Responsive Design**: Adaptive interface for web, iOS, and Android
+- ✅ **Real-time Updates**: Changes are instant and persistent
+- ✅ **Professional UI**: Modern volleyball court visualization
 
 ---
 
@@ -76,7 +87,8 @@ The app automatically deploys to web via GitHub Actions whenever code is pushed!
 | **Flutter** | Cross-platform framework | 100% AI-generated code |
 | **Dart** | Programming language | All logic written by AI |
 | **Provider** | State management | AI-designed architecture |
-| **CustomPainter** | Court graphics | AI-created visual rendering |
+| **SharedPreferences** | Data persistence | AI-implemented storage |
+| **CustomPainter** | 9x9 Court graphics | AI-created precise visual rendering |
 | **GitHub Actions** | CI/CD Pipeline | AI-configured deployment |
 
 ---
@@ -84,13 +96,15 @@ The app automatically deploys to web via GitHub Actions whenever code is pushed!
 ## 🎯 **The AI Coding Experience**
 
 ### What Claude AI Built:
-- 🏗️ **Complete Flutter architecture** from scratch
-- 🎨 **Custom volleyball court painter** with precise measurements
-- 🔄 **State management system** for dual teams
-- 📱 **Responsive design** adapting to screen sizes
+- 🏗️ **Complete Flutter architecture** from scratch with clean separation of concerns
+- 🎨 **Custom 9x9 volleyball court painter** with precise measurements and first-third line
+- 🔄 **Advanced rotation management system** with object-oriented design
+- 📊 **36 rotation combinations generator** for strategic planning
+- 💾 **Automatic data persistence** with SharedPreferences integration
+- 🏐 **Libero substitution logic** with customizable replacement order
+- 📱 **Responsive design** adapting to web, mobile, and tablet screens
 - 🚀 **GitHub Actions CI/CD** with FTP deployment
-- 🧪 **Comprehensive test suite** (currently disabled for demo)
-- 📝 **Full documentation** and README
+- 📝 **Complete documentation** including CLAUDE.md technical guide
 
 ### Human Contributions:
 - 💬 **Requirements specification** ("I want a volleyball field...")

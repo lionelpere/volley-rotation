@@ -16,6 +16,7 @@ class _MainMenuState extends State<MainMenu> {
   final List<String> _menuItems = [
     'Base rotation',
     'Base rotation opponent',
+    'Toutes les combinaisons',
   ];
 
   Widget _buildContent() {
@@ -24,6 +25,8 @@ class _MainMenuState extends State<MainMenu> {
         return const BaseRotationScreen();
       case 1:
         return const OpponentRotationScreen();
+      case 2:
+        return const AllCombinationsScreen();
       default:
         return const BaseRotationScreen();
     }
@@ -68,7 +71,7 @@ class _MainMenuState extends State<MainMenu> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       leading: Icon(
-                        index == 0 ? Icons.sports_volleyball : Icons.group,
+                        index == 0 ? Icons.sports_volleyball : index == 1 ? Icons.group : Icons.grid_view,
                         color: _selectedIndex == index
                             ? Theme.of(context).primaryColor
                             : Colors.grey,
@@ -183,6 +186,132 @@ class OpponentRotationScreen extends StatelessWidget {
     return const Center(
       child: RealisticVolleyballField(isOpponent: true),
     );
+  }
+}
+
+class AllCombinationsScreen extends StatelessWidget {
+  const AllCombinationsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Toutes les combinaisons de rotation',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Consumer<TeamState>(
+            builder: (context, teamState, child) {
+              final combinations = teamState.generateAllRotationCombinations();
+              
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: combinations.length,
+                  itemBuilder: (context, index) {
+                    final combination = combinations[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      child: ListTile(
+                        title: Text(
+                          'Combinaison ${index + 1}',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          'Home: Rotation ${combination['homeRotation']} vs Opponent: Rotation ${combination['opponentRotation']}',
+                        ),
+                        onTap: () {
+                          _showCombinationDetails(context, combination, index + 1);
+                        },
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+  
+  void _showCombinationDetails(BuildContext context, Map<String, dynamic> combination, int combinationNumber) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Combinaison $combinationNumber'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Équipe Locale - Rotation ${combination['homeRotation']}',
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                ),
+                const SizedBox(height: 8),
+                ..._buildPlayersList(combination['homePlayers'], Colors.blue),
+                const SizedBox(height: 16),
+                Text(
+                  'Équipe Adverse - Rotation ${combination['opponentRotation']}',
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                ),
+                const SizedBox(height: 8),
+                ..._buildPlayersList(combination['opponentPlayers'], Colors.red),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Fermer'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  
+  List<Widget> _buildPlayersList(Map<int, dynamic> players, Color color) {
+    return players.entries.map((entry) {
+      final position = entry.key;
+      final player = entry.value;
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 2),
+        child: Row(
+          children: [
+            Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.8),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  player.number.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text('Position $position - ${player.position}'),
+          ],
+        ),
+      );
+    }).toList();
   }
 }
 
