@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../models/team.dart';
 import '../models/court_state.dart';
+import '../models/position.dart';
 import '../services/rotation_engine.dart';
 
 /// Provider for managing rotation state in the application
@@ -122,4 +123,67 @@ class RotationProvider extends ChangeNotifier {
 
   /// Checks if the current configuration is valid
   bool get isValid => validationErrors.isEmpty && hasValidRotations;
+
+  /// Sets the current rotation directly (for initialization)
+  void setCurrentRotation(CourtState rotation) {
+    _rotations = [rotation];
+    _currentRotationIndex = 0;
+    notifyListeners();
+  }
+
+  /// Updates a player at a specific position
+  void updatePlayerAtPosition(Position position, String playerId) {
+    if (currentRotation != null) {
+      final updatedPositions = Map<Position, String>.from(currentRotation!.homeTeamPositions);
+      updatedPositions[position] = playerId;
+      
+      final updatedRotation = currentRotation!.copyWith(
+        homeTeamPositions: updatedPositions,
+      );
+      
+      _rotations[_currentRotationIndex] = updatedRotation;
+      notifyListeners();
+    }
+  }
+
+  /// Rotates the team clockwise
+  void rotateClockwise() {
+    if (currentRotation != null) {
+      final rotatedPositions = RotationEngine.rotateClockwise(currentRotation!.homeTeamPositions);
+      final updatedRotation = currentRotation!.copyWith(
+        homeTeamPositions: rotatedPositions,
+        rotationNumber: currentRotation!.rotationNumber + 1,
+      );
+      
+      _rotations[_currentRotationIndex] = updatedRotation;
+      notifyListeners();
+    }
+  }
+
+  /// Toggles libero substitution
+  void toggleLiberoSubstitution() {
+    if (currentRotation != null) {
+      final currentLiberoState = currentRotation!.homeLiberoState;
+      LiberoState newLiberoState;
+      
+      switch (currentLiberoState) {
+        case LiberoState.offCourt:
+          newLiberoState = LiberoState.onCourt;
+          break;
+        case LiberoState.onCourt:
+          newLiberoState = LiberoState.offCourt;
+          break;
+        case LiberoState.rotating:
+          newLiberoState = LiberoState.onCourt;
+          break;
+      }
+      
+      final updatedRotation = currentRotation!.copyWith(
+        homeLiberoState: newLiberoState,
+      );
+      
+      _rotations[_currentRotationIndex] = updatedRotation;
+      notifyListeners();
+    }
+  }
 }
